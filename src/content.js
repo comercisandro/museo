@@ -1,9 +1,18 @@
-const ROOM1_MANIFEST_PATH = '/data/habitacion-1/manifest.json'
+const ROOM1_MANIFEST_PATH = 'data/habitacion-1/manifest.json'
+
+function resolveAssetPath(path) {
+  if (!path) {
+    return path
+  }
+
+  const normalized = path.startsWith('/') ? path.slice(1) : path
+  return new URL(normalized, import.meta.env.BASE_URL).toString()
+}
 
 let room1ContentPromise
 
 async function loadText(path) {
-  const response = await fetch(path)
+  const response = await fetch(resolveAssetPath(path))
 
   if (!response.ok) {
     throw new Error(`No se pudo cargar el texto: ${path}`)
@@ -49,9 +58,24 @@ export function getRoom1Content() {
           title: manifest.title || 'Habitacion 1',
           description: manifest.description || '',
           textSections,
-          image: manifest.image || null,
-          audio: manifest.audio || null,
-          video: manifest.video || null,
+          image: manifest.image
+            ? {
+                ...manifest.image,
+                path: resolveAssetPath(manifest.image.path),
+              }
+            : null,
+          audio: manifest.audio
+            ? {
+                ...manifest.audio,
+                path: resolveAssetPath(manifest.audio.path),
+              }
+            : null,
+          video: manifest.video
+            ? {
+                ...manifest.video,
+                path: resolveAssetPath(manifest.video.path),
+              }
+            : null,
         }
       })
       .catch((error) => ({
