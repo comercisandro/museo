@@ -1,0 +1,79 @@
+:root {
+  color: #f0f4f8;
+  background: #94a4af;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #94a4af;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  padding: 12px 14px;
+  max-width: min(320px, calc(100vw - 32px));
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  background: rgba(55, 74, 86, 0.74);
+  box-shadow: 4px 4px 0 rgba(19, 29, 36, 0.35);
+}
+
+.hud h1 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hud p {
+  margin: 4px 0;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 640px) {
+  .hud {
+    top: 10px;
+    left: 10px;
+    padding: 10px 12px;
+  }
+
+  .hud h1 {
+    font-size: 0.92rem;
+  }
+
+  .hud p {
+    font-size: 0.8rem;
+  }
+}
