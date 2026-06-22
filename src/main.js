@@ -7,22 +7,42 @@ import {
   FOG_NEAR,
   FOV,
 } from './constants.js'
+import { getRoom1Content } from './content.js'
 import { RetroController } from './controller.js'
-import { buildMaze, getCellWorldPosition, getSpawnState, isWalkable } from './maze.js'
+import { buildRoom1Exhibit } from './exhibits.js'
+import { buildMaze, getAreaInfo, getCellWorldPosition, getSpawnState, isWalkable } from './maze.js'
+
+const DIRECTION_LABELS = ['Norte', 'Este', 'Sur', 'Oeste']
 
 const app = document.querySelector('#app')
 
 app.innerHTML = `
   <div class="viewport">
     <div class="hud">
-      <h1>Laberinto Retro</h1>
-      <p>W/S o flechas: avanzar y retroceder</p>
-      <p>A/D o flechas: girar 90 grados</p>
+      <p class="hud-label">Museo surrealista multiagente</p>
+      <h1 class="hud-title">Hall Principal</h1>
+      <p class="hud-subtitle">Ingreso</p>
+      <p class="hud-copy">Explora el corredor central y las 7 salas tematicas del museo.</p>
+      <p class="hud-direction">Mirando hacia: Norte</p>
+      <div class="hud-controls">
+        <span>W/S: avanzar</span>
+        <span>A/D: girar</span>
+      </div>
+    </div>
+    <div class="audio-dock is-hidden">
+      <p class="audio-dock-label">Audio de la sala 1</p>
+      <audio class="room-audio" controls preload="metadata"></audio>
     </div>
   </div>
 `
 
 const viewport = document.querySelector('.viewport')
+const hudTitle = document.querySelector('.hud-title')
+const hudSubtitle = document.querySelector('.hud-subtitle')
+const hudCopy = document.querySelector('.hud-copy')
+const hudDirection = document.querySelector('.hud-direction')
+const audioDock = document.querySelector('.audio-dock')
+const roomAudio = document.querySelector('.room-audio')
 
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(BACKGROUND_COLOR)
@@ -35,10 +55,10 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
 renderer.setSize(window.innerWidth, window.innerHeight)
 viewport.appendChild(renderer.domElement)
 
-scene.add(new THREE.AmbientLight(0xc8d0d8, 1.8))
+scene.add(new THREE.AmbientLight(0xa48a75, 1.1))
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2)
-directionalLight.position.set(6, 9, 2)
+const directionalLight = new THREE.DirectionalLight(0xffe5b8, 1.6)
+directionalLight.position.set(4, 10, -3)
 scene.add(directionalLight)
 
 scene.add(buildMaze())
@@ -49,7 +69,60 @@ camera.position.set(startPosition.x, CAMERA_HEIGHT, startPosition.z)
 camera.rotation.order = 'YXZ'
 camera.rotation.y = -spawn.direction * (Math.PI / 2)
 
-const controller = new RetroController({ camera, isWalkable, state: spawn })
+let room1Content = null
+let room1AudioAutoplayFailed = false
+
+async function ensureRoom1Content() {
+  if (room1Content) {
+    return room1Content
+  }
+
+  room1Content = await getRoom1Content()
+
+  if (room1Content.audio?.path) {
+    roomAudio.src = room1Content.audio.path
+  }
+
+  return room1Content
+}
+
+async function mountRoom1Exhibit() {
+  const content = await ensureRoom1Content()
+  const exhibit = await buildRoom1Exhibit(content)
+  scene.add(exhibit)
+}
+
+mountRoom1Exhibit()
+
+async function updateHud(state) {
+  const area = getAreaInfo(state.row, state.col)
+  hudTitle.textContent = area.title
+  hudSubtitle.textContent = area.label
+  hudCopy.textContent = area.description
+  hudDirection.textContent = `Mirando hacia: ${DIRECTION_LABELS[state.direction]}`
+
+  if (area.id === 'room1') {
+    await ensureRoom1Content()
+    audioDock.classList.remove('is-hidden')
+
+    if (roomAudio.src && roomAudio.paused) {
+      roomAudio.play().catch(() => {
+        room1AudioAutoplayFailed = true
+      })
+    }
+  } else {
+    roomAudio.pause()
+    roomAudio.currentTime = 0
+    audioDock.classList.add('is-hidden')
+  }
+}
+
+const controller = new RetroController({
+  camera,
+  isWalkable,
+  onStateChange: updateHud,
+  state: spawn,
+})
 
 function handleResize() {
   camera.aspect = window.innerWidth / window.innerHeight

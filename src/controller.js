@@ -22,15 +22,17 @@ function normalizeAngle(angle) {
 }
 
 export class RetroController {
-  constructor({ camera, isWalkable, state }) {
+  constructor({ camera, isWalkable, onStateChange, state }) {
     this.camera = camera
     this.isWalkable = isWalkable
+    this.onStateChange = onStateChange
     this.row = state.row
     this.col = state.col
     this.direction = state.direction
     this.action = null
 
     window.addEventListener('keydown', (event) => this.onKeyDown(event))
+    this.notifyStateChange()
   }
 
   onKeyDown(event) {
@@ -136,6 +138,21 @@ export class RetroController {
 
       this.action = null
       this.applyState()
+      this.notifyStateChange()
+    }
+  }
+
+  getState() {
+    return {
+      row: this.row,
+      col: this.col,
+      direction: this.direction,
+    }
+  }
+
+  notifyStateChange() {
+    if (this.onStateChange) {
+      this.onStateChange(this.getState())
     }
   }
 

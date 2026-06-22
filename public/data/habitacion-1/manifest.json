@@ -1,0 +1,29 @@
+{
+  "title": "Sala 1: Texto y Pedagogia de la Sospecha",
+  "description": "Recursos reales cargados desde la carpeta de la habitacion 1: textos curatoriales, imagen principal y audio de soberania cognitiva.",
+  "texts": [
+    {
+      "title": "IA y Colonialismo Digital",
+      "path": "/data/habitacion-1/texto/1.txt"
+    },
+    {
+      "title": "Tendencias y Tensiones",
+      "path": "/data/habitacion-1/texto/2.txt"
+    },
+    {
+      "title": "Mutaciones, Expansiones y Prospectivas",
+      "path": "/data/habitacion-1/texto/4.txt"
+    },
+    {
+      "title": "Pregunta Significativa del Grupo",
+      "path": "/data/habitacion-1/texto/5.txt"
+    }
+  ],
+  "image": {
+    "path": "/data/habitacion-1/imagenes/Educaci%C3%B3n_en_la_Encrucijada_Algor%C3%ADtmica.png",
+    "caption": "Educacion en la encrucijada algoritmica"
+  },
+  "audio": {
+    "path": "/data/habitacion-1/audio/Soberan%C3%ADa_cognitiva_frente_a_la_IA.m4a"
+  }
+}
