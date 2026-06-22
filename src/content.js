@@ -6,7 +6,11 @@ function resolveAssetPath(path) {
   }
 
   const normalized = path.startsWith('/') ? path.slice(1) : path
-  return new URL(normalized, import.meta.env.BASE_URL).toString()
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`
+
+  return `${base}${normalized}`
 }
 
 let room1ContentPromise
@@ -34,7 +38,7 @@ async function loadTextSections(sections = []) {
 
 export function getRoom1Content() {
   if (!room1ContentPromise) {
-    room1ContentPromise = fetch(ROOM1_MANIFEST_PATH)
+    room1ContentPromise = fetch(resolveAssetPath(ROOM1_MANIFEST_PATH))
       .then((response) => {
         if (!response.ok) {
           throw new Error('No se pudo cargar manifest.json de la habitacion 1')
