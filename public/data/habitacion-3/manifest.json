@@ -1,0 +1,27 @@
+{
+  "title": "Cartografias del Aprendizaje",
+  "description": "Una sala sobre PLE, organizacion del aprendizaje y construccion de trayectorias propias en entornos digitales.",
+  "texts": [
+    {
+      "title": "Presentacion",
+      "path": "/data/habitacion-3/texto/presentacion.txt"
+    },
+    {
+      "title": "Proyeccion",
+      "path": "/data/habitacion-3/texto/proximo-recurso.txt"
+    }
+  ],
+  "image": {
+    "path": "/data/habitacion-3/imagenes/PLE.png",
+    "caption": "Esquema de entorno personal de aprendizaje"
+  },
+  "images": [
+    {
+      "path": "/data/habitacion-3/imagenes/tapa.png",
+      "caption": "Portada del recurso asociado"
+    }
+  ],
+  "audio": {
+    "path": "/data/habitacion-3/audio/Podcast.m4a"
+  }
+}

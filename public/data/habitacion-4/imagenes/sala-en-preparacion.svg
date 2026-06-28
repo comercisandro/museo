@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#14161b"/>
+  <rect x="36" y="36" width="1128" height="728" fill="#1a1f2e" stroke="#aab6ff" stroke-width="8"/>
+  <circle cx="860" cy="220" r="104" fill="#aab6ff" opacity="0.82"/>
+  <path d="M180 590 C340 500 470 430 640 460 S960 520 1050 380" fill="none" stroke="#d9b36a" stroke-width="18" stroke-linecap="round"/>
+  <text x="84" y="102" fill="#f5efe4" font-family="Georgia, serif" font-size="44">Sala 4 en preparacion</text>
+  <text x="84" y="708" fill="#d6cab8" font-family="Georgia, serif" font-size="28">Cuadrante listo para una nueva intervencion.</text>
+</svg>

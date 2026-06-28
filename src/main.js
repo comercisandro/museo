@@ -7,9 +7,9 @@ import {
   FOG_NEAR,
   FOV,
 } from './constants.js'
-import { getRoom1Content } from './content.js'
+import { getRoomContent } from './content.js'
 import { RetroController } from './controller.js'
-import { buildRoom1Exhibit } from './exhibits.js'
+import { buildRoom1Exhibit, buildRoom2Exhibit, buildRoom3Exhibit, buildRoom4Exhibit } from './exhibits.js'
 import { buildMaze, getAreaInfo, getCellWorldPosition, getSpawnState, isWalkable } from './maze.js'
 
 const DIRECTION_LABELS = ['Norte', 'Este', 'Sur', 'Oeste']
@@ -20,9 +20,9 @@ app.innerHTML = `
   <div class="viewport">
     <div class="hud">
       <p class="hud-label">Museo surrealista multiagente</p>
-      <h1 class="hud-title">Hall Principal</h1>
-      <p class="hud-subtitle">Ingreso</p>
-      <p class="hud-copy">Explora el corredor central y las 7 salas tematicas del museo.</p>
+      <h1 class="hud-title">Corredor Central</h1>
+      <p class="hud-subtitle">Circulacion libre</p>
+      <p class="hud-copy">Apareces en el centro de un museo compacto con cuatro salas conectadas.</p>
       <p class="hud-direction">Mirando hacia: Norte</p>
       <div class="hud-controls">
         <span>W/S: avanzar</span>
@@ -30,7 +30,7 @@ app.innerHTML = `
       </div>
     </div>
     <div class="audio-dock is-hidden">
-      <p class="audio-dock-label">Audio de la sala 1</p>
+      <p class="audio-dock-label">Audio de la sala</p>
       <audio class="room-audio" controls preload="metadata"></audio>
     </div>
   </div>
@@ -42,6 +42,7 @@ const hudSubtitle = document.querySelector('.hud-subtitle')
 const hudCopy = document.querySelector('.hud-copy')
 const hudDirection = document.querySelector('.hud-direction')
 const audioDock = document.querySelector('.audio-dock')
+const audioDockLabel = document.querySelector('.audio-dock-label')
 const roomAudio = document.querySelector('.room-audio')
 
 const scene = new THREE.Scene()
@@ -69,30 +70,52 @@ camera.position.set(startPosition.x, CAMERA_HEIGHT, startPosition.z)
 camera.rotation.order = 'YXZ'
 camera.rotation.y = -spawn.direction * (Math.PI / 2)
 
-let room1Content = null
-let room1AudioAutoplayFailed = false
+const roomContents = new Map()
+let currentAreaId = null
+let currentAudioRoomNumber = null
 
-async function ensureRoom1Content() {
-  if (room1Content) {
-    return room1Content
+async function ensureRoomContent(roomNumber) {
+  if (roomContents.has(roomNumber)) {
+    return roomContents.get(roomNumber)
   }
 
-  room1Content = await getRoom1Content()
+  const content = await getRoomContent(roomNumber)
 
-  if (room1Content.audio?.path) {
-    roomAudio.src = room1Content.audio.path
+  roomContents.set(roomNumber, content)
+  return content
+}
+
+async function mountRoomExhibits() {
+  try {
+    const room1Content = await ensureRoomContent(1)
+    scene.add(await buildRoom1Exhibit(room1Content))
+  } catch {
+    // Keep the museum navigable even if an exhibit asset fails.
   }
 
-  return room1Content
+  try {
+    const room2Content = await ensureRoomContent(2)
+    scene.add(await buildRoom2Exhibit(room2Content))
+  } catch {
+    // Keep the museum navigable even if an exhibit asset fails.
+  }
+
+  try {
+    const room3Content = await ensureRoomContent(3)
+    scene.add(await buildRoom3Exhibit(room3Content))
+  } catch {
+    // Keep the museum navigable even if an exhibit asset fails.
+  }
+
+  try {
+    const room4Content = await ensureRoomContent(4)
+    scene.add(await buildRoom4Exhibit(room4Content))
+  } catch {
+    // Keep the museum navigable even if an exhibit asset fails.
+  }
 }
 
-async function mountRoom1Exhibit() {
-  const content = await ensureRoom1Content()
-  const exhibit = await buildRoom1Exhibit(content)
-  scene.add(exhibit)
-}
-
-mountRoom1Exhibit()
+mountRoomExhibits()
 
 async function updateHud(state) {
   const area = getAreaInfo(state.row, state.col)
@@ -101,18 +124,41 @@ async function updateHud(state) {
   hudCopy.textContent = area.description
   hudDirection.textContent = `Mirando hacia: ${DIRECTION_LABELS[state.direction]}`
 
-  if (area.id === 'room1') {
-    await ensureRoom1Content()
+  const previousAreaId = currentAreaId
+  currentAreaId = area.id
+
+  if (['room1', 'room2', 'room3', 'room4'].includes(area.id)) {
+    const roomNumber = Number(area.id.replace('room', ''))
+    const content = await ensureRoomContent(roomNumber)
+    audioDockLabel.textContent = `Audio de la sala ${roomNumber}`
+    const audioSource = content.audio?.path || content.video?.path || null
+
+    if (audioSource) {
+      const currentSrc = roomAudio.getAttribute('src')
+
+      if (currentAudioRoomNumber !== roomNumber || currentSrc !== audioSource) {
+        roomAudio.src = audioSource
+        roomAudio.load()
+        currentAudioRoomNumber = roomNumber
+      }
+    } else {
+      roomAudio.removeAttribute('src')
+      roomAudio.load()
+      currentAudioRoomNumber = null
+    }
+
     audioDock.classList.remove('is-hidden')
 
-    if (roomAudio.src && roomAudio.paused) {
-      roomAudio.play().catch(() => {
-        room1AudioAutoplayFailed = true
-      })
+    if (audioSource && (previousAreaId !== area.id || roomAudio.paused)) {
+      roomAudio.play().catch(() => {})
     }
   } else {
-    roomAudio.pause()
-    roomAudio.currentTime = 0
+    if (currentAudioRoomNumber !== null) {
+      roomAudio.pause()
+      roomAudio.currentTime = 0
+      currentAudioRoomNumber = null
+    }
+
     audioDock.classList.add('is-hidden')
   }
 }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#140f16"/>
+  <rect x="36" y="36" width="1128" height="728" fill="#1b1823" stroke="#8de7ee" stroke-width="8"/>
+  <circle cx="228" cy="210" r="98" fill="#d9b36a" opacity="0.92"/>
+  <path d="M140 580 C280 420 430 410 560 530 S850 700 1030 430" fill="none" stroke="#f0a9d7" stroke-width="24" stroke-linecap="round"/>
+  <rect x="460" y="120" width="270" height="180" fill="#293947" stroke="#f5efe4" stroke-width="6"/>
+  <rect x="770" y="110" width="160" height="250" fill="#23202b" stroke="#d9b36a" stroke-width="5"/>
+  <circle cx="850" cy="185" r="42" fill="#8de7ee" opacity="0.85"/>
+  <rect x="818" y="250" width="64" height="78" fill="#f5efe4" opacity="0.9"/>
+  <text x="84" y="98" fill="#f5efe4" font-family="Georgia, serif" font-size="42">La educacion en la encrucijada algoritmica</text>
+  <text x="84" y="708" fill="#d6cab8" font-family="Georgia, serif" font-size="28">Datos, soberania cognitiva y juicio humano en tension.</text>
+</svg>

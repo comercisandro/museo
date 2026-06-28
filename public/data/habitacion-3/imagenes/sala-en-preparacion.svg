@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#16161a"/>
+  <rect x="36" y="36" width="1128" height="728" fill="#1d2320" stroke="#b5d46b" stroke-width="8"/>
+  <circle cx="300" cy="230" r="110" fill="#b5d46b" opacity="0.85"/>
+  <path d="M160 560 C360 420 520 390 760 500" fill="none" stroke="#f5efe4" stroke-width="18" stroke-linecap="round"/>
+  <text x="84" y="102" fill="#f5efe4" font-family="Georgia, serif" font-size="44">Sala 3 en preparacion</text>
+  <text x="84" y="708" fill="#d6cab8" font-family="Georgia, serif" font-size="28">Reservada para una nueva curaduria.</text>
+</svg>

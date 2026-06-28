@@ -1,0 +1,27 @@
+{
+  "title": "Ecologias del Aprendizaje Abierto",
+  "description": "Una sala sobre educacion expandida, aprendizaje ubicuo y la transicion desde el uso instrumental de la tecnologia hacia formas de participacion, empoderamiento y produccion compartida de conocimiento.",
+  "texts": [
+    {
+      "title": "Marco curatorial",
+      "path": "/data/habitacion-4/texto/presentacion.txt"
+    },
+    {
+      "title": "Clave de lectura",
+      "path": "/data/habitacion-4/texto/proximo-recurso.txt"
+    }
+  ],
+  "image": {
+    "path": "/data/habitacion-4/imagenes/Ecolog%C3%ADas_de_Aprendizaje_Abierto.png",
+    "caption": "Ecologias del aprendizaje abierto"
+  },
+  "images": [
+    {
+      "path": "/data/habitacion-4/imagenes/Educaci%C3%B3n_expandida_y_aprendizaje_digital.png",
+      "caption": "Educacion expandida y aprendizaje digital"
+    }
+  ],
+  "video": {
+    "path": "/data/habitacion-4/videos/TIC,_TAC_y_TEP_en_el_aula.mp4"
+  }
+}

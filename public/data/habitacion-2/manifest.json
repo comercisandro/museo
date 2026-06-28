@@ -1,0 +1,32 @@
+{
+  "title": "Sala 2: Pedagogia Emergente y Alfabetizacion Digital",
+  "description": "Una sala sobre pedagogia emergente, tecnologias criticas y ecosistemas educativos expandidos en la era de la IA generativa.",
+  "texts": [
+    {
+      "title": "Curaduria 1: Redisenar",
+      "path": "/data/habitacion-2/texto/curatorial-1.txt"
+    },
+    {
+      "title": "Curaduria 2: Riesgos",
+      "path": "/data/habitacion-2/texto/curatorial-2.txt"
+    },
+    {
+      "title": "Curaduria 3: Ecosistema",
+      "path": "/data/habitacion-2/texto/curatorial-3.txt"
+    },
+    {
+      "title": "Fuente de trabajo",
+      "path": "/data/habitacion-2/texto/cartel_entrada.txt"
+    }
+  ],
+  "image": {
+    "path": "/data/habitacion-2/imagenes/pedagogia-emergente.svg",
+    "caption": "Pedagogia emergente y alfabetizacion digital"
+  },
+  "audio": {
+    "path": "/data/habitacion-2/audio/Evita_que_la_IA_piense_por_ti.m4a"
+  },
+  "video": {
+    "path": "/data/habitacion-2/videos/video.mp4"
+  }
+}

@@ -1,4 +1,4 @@
-const ROOM1_MANIFEST_PATH = 'data/habitacion-1/manifest.json'
+const roomContentCache = new Map()
 
 function resolveAssetPath(path) {
   if (!path) {
@@ -6,14 +6,8 @@ function resolveAssetPath(path) {
   }
 
   const normalized = path.startsWith('/') ? path.slice(1) : path
-  const base = import.meta.env.BASE_URL.endsWith('/')
-    ? import.meta.env.BASE_URL
-    : `${import.meta.env.BASE_URL}/`
-
-  return `${base}${normalized}`
+  return new URL(normalized, window.location.href).toString()
 }
-
-let room1ContentPromise
 
 async function loadText(path) {
   const response = await fetch(resolveAssetPath(path))
@@ -36,61 +30,74 @@ async function loadTextSections(sections = []) {
   return loadedSections.filter((section) => section.body.trim())
 }
 
-export function getRoom1Content() {
-  if (!room1ContentPromise) {
-    room1ContentPromise = fetch(resolveAssetPath(ROOM1_MANIFEST_PATH))
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('No se pudo cargar manifest.json de la habitacion 1')
-        }
+async function loadRoomContent(roomNumber) {
+  const manifestPath = resolveAssetPath(`data/habitacion-${roomNumber}/manifest.json`)
+  const response = await fetch(manifestPath)
 
-        return response.json()
-      })
-      .then(async (manifest) => {
-        const textSections = manifest.texts?.length
-          ? await loadTextSections(manifest.texts)
-          : manifest.text?.path
-            ? [
-                {
-                  title: manifest.text.title || 'Texto',
-                  body: await loadText(manifest.text.path),
-                },
-              ]
-            : []
+  if (!response.ok) {
+    throw new Error(`No se pudo cargar manifest.json de la habitacion ${roomNumber}`)
+  }
 
-        return {
-          title: manifest.title || 'Habitacion 1',
-          description: manifest.description || '',
-          textSections,
-          image: manifest.image
-            ? {
-                ...manifest.image,
-                path: resolveAssetPath(manifest.image.path),
-              }
-            : null,
-          audio: manifest.audio
-            ? {
-                ...manifest.audio,
-                path: resolveAssetPath(manifest.audio.path),
-              }
-            : null,
-          video: manifest.video
-            ? {
-                ...manifest.video,
-                path: resolveAssetPath(manifest.video.path),
-              }
-            : null,
+  const manifest = await response.json()
+  const textSections = manifest.texts?.length
+    ? await loadTextSections(manifest.texts)
+    : manifest.text?.path
+      ? [
+          {
+            title: manifest.text.title || 'Texto',
+            body: await loadText(manifest.text.path),
+          },
+        ]
+      : []
+
+  return {
+    id: `room${roomNumber}`,
+    title: manifest.title || `Habitacion ${roomNumber}`,
+    description: manifest.description || '',
+    textSections,
+    image: manifest.image
+      ? {
+          ...manifest.image,
+          path: resolveAssetPath(manifest.image.path),
         }
-      })
-      .catch((error) => ({
-        title: 'Habitacion 1',
+      : null,
+    audio: manifest.audio
+      ? {
+          ...manifest.audio,
+          path: resolveAssetPath(manifest.audio.path),
+        }
+      : null,
+    video: manifest.video
+      ? {
+          ...manifest.video,
+          path: resolveAssetPath(manifest.video.path),
+        }
+      : null,
+    images: Array.isArray(manifest.images)
+      ? manifest.images.map((image) => ({
+          ...image,
+          path: resolveAssetPath(image.path),
+        }))
+      : [],
+  }
+}
+
+export function getRoomContent(roomNumber) {
+  if (!roomContentCache.has(roomNumber)) {
+    roomContentCache.set(
+      roomNumber,
+      loadRoomContent(roomNumber).catch((error) => ({
+        id: `room${roomNumber}`,
+        title: `Habitacion ${roomNumber}`,
         description: 'No se pudieron cargar los recursos multimedia de la sala.',
         textSections: [{ title: 'Error', body: error.message }],
         image: null,
         audio: null,
         video: null,
-      }))
+        images: [],
+      })),
+    )
   }
 
-  return room1ContentPromise
+  return roomContentCache.get(roomNumber)
 }
