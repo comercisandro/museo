@@ -9,7 +9,16 @@ import {
 } from './constants.js'
 import { getRoomContent } from './content.js'
 import { RetroController } from './controller.js'
-import { buildRoom1Exhibit, buildRoom2Exhibit, buildRoom3Exhibit, buildRoom4Exhibit } from './exhibits.js'
+import {
+  buildCorridorNorthLinkExhibit,
+  buildCorridorNorthInfoExhibits,
+  buildCorridorSouthInfoExhibits,
+  buildCorridorSouthLinkExhibit,
+  buildRoom1Exhibit,
+  buildRoom2Exhibit,
+  buildRoom3Exhibit,
+  buildRoom4Exhibit,
+} from './exhibits.js'
 import { buildMaze, getAreaInfo, getCellWorldPosition, getSpawnState, isWalkable } from './maze.js'
 
 const DIRECTION_LABELS = ['Norte', 'Este', 'Sur', 'Oeste']
@@ -22,7 +31,7 @@ app.innerHTML = `
       <p class="hud-label">Museo surrealista multiagente</p>
       <h1 class="hud-title">Corredor Central</h1>
       <p class="hud-subtitle">Circulacion libre</p>
-      <p class="hud-copy">Apareces en el centro de un museo compacto con cuatro salas conectadas.</p>
+      <p class="hud-copy">Apareces en el centro de un museo compacto con cuatro salas y dos capsulas de aprendizaje conectadas.</p>
       <p class="hud-direction">Mirando hacia: Norte</p>
       <div class="hud-controls">
         <span>W/S: avanzar</span>
@@ -63,6 +72,21 @@ directionalLight.position.set(4, 10, -3)
 scene.add(directionalLight)
 
 scene.add(buildMaze())
+
+const interactiveExhibits = []
+
+scene.add(buildCorridorNorthInfoExhibits())
+scene.add(buildCorridorSouthInfoExhibits())
+
+buildCorridorNorthLinkExhibit().then((exhibit) => {
+  scene.add(exhibit)
+  interactiveExhibits.push(exhibit)
+})
+
+buildCorridorSouthLinkExhibit().then((exhibit) => {
+  scene.add(exhibit)
+  interactiveExhibits.push(exhibit)
+})
 
 const spawn = getSpawnState()
 const startPosition = getCellWorldPosition(spawn.col, spawn.row)
@@ -179,6 +203,40 @@ function handleResize() {
 window.addEventListener('resize', handleResize)
 
 const clock = new THREE.Clock()
+const raycaster = new THREE.Raycaster()
+const pointer = new THREE.Vector2()
+
+function getInteractiveTarget(event) {
+  if (!interactiveExhibits.length) {
+    return null
+  }
+
+  const rect = renderer.domElement.getBoundingClientRect()
+  pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+  pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+  raycaster.setFromCamera(pointer, camera)
+  const hits = raycaster.intersectObjects(interactiveExhibits, true)
+
+  return hits.find((hit) => hit.object.userData.url) || null
+}
+
+function handlePointerMove(event) {
+  renderer.domElement.style.cursor = getInteractiveTarget(event) ? 'pointer' : 'default'
+}
+
+function handleCanvasClick(event) {
+  const target = getInteractiveTarget(event)
+
+  if (!target) {
+    return
+  }
+
+  window.open(target.object.userData.url, '_blank', 'noopener,noreferrer')
+}
+
+renderer.domElement.addEventListener('pointermove', handlePointerMove)
+renderer.domElement.addEventListener('click', handleCanvasClick)
 
 function animate() {
   requestAnimationFrame(animate)

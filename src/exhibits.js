@@ -9,66 +9,71 @@ const ROOM_REGIONS = {
   room4: { top: 5, left: 7, height: 3, width: 3, accent: 0xaab6ff },
 }
 
+
 function getWallSlots(roomId) {
   const slots = {
     room1: {
-      primaryImage: { wall: 'north', colOffset: 1, size: { width: 1.95, height: 1.35 }, y: 1.5 },
+      primaryImage: { wall: 'north', colOffset: 1, size: { width: 2.55, height: 1.7 }, y: 1.56 },
       secondaryImage: null,
       video: null,
       texts: [
-        { wall: 'west', rowOffset: 1, size: { width: 1.55, height: 1.12 }, y: 1.36 },
-        { wall: 'south', colOffset: 0, size: { width: 1.18, height: 0.88 }, y: 1.32 },
+        { wall: 'west', rowOffset: 1, size: { width: 1.55, height: 1.12 }, y: 1.38 },
+        { wall: 'south', colOffset: 0, size: { width: 1.35, height: 1.0 }, y: 1.34 },
       ],
       relief: {
         wall: 'north',
         colOffset: 0,
-        size: { width: 2.2, height: 0.55, depth: 0.08 },
-        y: 2.15,
+        size: { width: 1.35, height: 0.36, depth: 0.08 },
+        y: 2.18,
         variant: 'algorithmic-grid',
       },
     },
     room2: {
-      primaryImage: { wall: 'north', colOffset: 1, size: { width: 1.68, height: 1.12 }, y: 1.46 },
+      primaryImage: { wall: 'north', colOffset: 1, size: { width: 2.55, height: 1.7 }, y: 1.56 },
       secondaryImage: null,
       video: { wall: 'east', rowOffset: 1, size: { width: 1.82, height: 1.28 }, y: 1.5 },
       texts: [
-        { wall: 'south', colOffset: 2, size: { width: 1.18, height: 0.88 }, y: 1.32 },
+        { wall: 'west', rowOffset: 0, size: { width: 1.32, height: 0.98 }, y: 1.34 },
+        { wall: 'south', colOffset: 0, size: { width: 1.35, height: 1.0 }, y: 1.34 },
+        { wall: 'south', colOffset: 2, size: { width: 1.35, height: 1.0 }, y: 1.34 },
       ],
       relief: {
-        wall: 'south',
-        colOffset: 0,
-        size: { width: 2.2, height: 0.55, depth: 0.08 },
-        y: 2.15,
+        wall: 'east',
+        rowOffset: 0,
+        size: { width: 1.25, height: 0.36, depth: 0.08 },
+        y: 2.18,
         variant: 'pedagogic-modules',
       },
     },
     room3: {
-      primaryImage: { wall: 'south', colOffset: 1, size: { width: 1.95, height: 1.35 }, y: 1.5 },
-      secondaryImage: { wall: 'west', rowOffset: 1, size: { width: 1.55, height: 1.12 }, y: 1.46 },
+      primaryImage: { wall: 'south', colOffset: 1, size: { width: 2.5, height: 1.7 }, y: 1.54 },
+      secondaryImage: { wall: 'north', colOffset: 2, size: { width: 1.45, height: 1.05 }, y: 1.38 },
       video: null,
       texts: [
-        { wall: 'north', colOffset: 0, size: { width: 1.18, height: 0.88 }, y: 1.32 },
+        { wall: 'west', rowOffset: 0, size: { width: 1.35, height: 0.98 }, y: 1.34 },
+        { wall: 'west', rowOffset: 2, size: { width: 1.35, height: 0.98 }, y: 1.34 },
       ],
       relief: {
-        wall: 'north',
-        colOffset: 0,
-        size: { width: 2.2, height: 0.55, depth: 0.08 },
-        y: 2.15,
+        wall: 'east',
+        rowOffset: 0,
+        size: { width: 1.2, height: 0.34, depth: 0.08 },
+        y: 2.16,
         variant: 'learning-map',
       },
     },
     room4: {
-      primaryImage: { wall: 'south', colOffset: 1, size: { width: 1.95, height: 1.35 }, y: 1.5 },
-      secondaryImage: { wall: 'north', colOffset: 2, size: { width: 1.18, height: 0.88 }, y: 1.32 },
+      primaryImage: { wall: 'south', colOffset: 1, size: { width: 2.4, height: 1.62 }, y: 1.54 },
+      secondaryImage: null,
       video: { wall: 'east', rowOffset: 1, size: { width: 1.82, height: 1.28 }, y: 1.5 },
       texts: [
-        { wall: 'north', colOffset: 0, size: { width: 1.18, height: 0.88 }, y: 1.32 },
+        { wall: 'north', colOffset: 0, size: { width: 1.32, height: 0.98 }, y: 1.34 },
+        { wall: 'north', colOffset: 2, size: { width: 1.32, height: 0.98 }, y: 1.34 },
       ],
       relief: {
-        wall: 'south',
-        colOffset: 0,
-        size: { width: 2.2, height: 0.55, depth: 0.08 },
-        y: 2.15,
+        wall: 'east',
+        rowOffset: 0,
+        size: { width: 1.2, height: 0.34, depth: 0.08 },
+        y: 2.16,
         variant: 'open-ecology',
       },
     },
@@ -144,6 +149,102 @@ function makeCanvasTexture(title, body, accent, typography, width = 1024, height
   return texture
 }
 
+function makeLinkCanvasTexture(title, url, accent, width = 1024, height = 768) {
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d')
+
+  ctx.fillStyle = '#171018'
+  ctx.fillRect(0, 0, width, height)
+  ctx.strokeStyle = `#${new THREE.Color(accent).getHexString()}`
+  ctx.lineWidth = 14
+  ctx.strokeRect(18, 18, width - 36, height - 36)
+
+  ctx.fillStyle = '#d9b36a'
+  ctx.font = "700 58px 'Gill Sans', 'Segoe UI', sans-serif"
+  ctx.fillText(title, 56, 96)
+
+  ctx.fillStyle = '#f5efe4'
+  ctx.font = "32px 'Gill Sans', 'Segoe UI', sans-serif"
+  ctx.fillText('Recurso web sugerido:', 56, 178)
+
+  ctx.fillStyle = `#${new THREE.Color(accent).getHexString()}`
+  ctx.font = "bold 36px 'Courier New', monospace"
+
+  const words = url.split(/\s+/)
+  const lines = []
+  let line = ''
+
+  for (const word of words) {
+    const next = line ? `${line} ${word}` : word
+    if (ctx.measureText(next).width > width - 112) {
+      lines.push(line)
+      line = word
+    } else {
+      line = next
+    }
+  }
+
+  if (line) lines.push(line)
+
+  lines.forEach((content, index) => {
+    ctx.fillText(content, 56, 260 + index * 48)
+  })
+
+  ctx.fillStyle = '#f5efe4'
+  ctx.font = "28px 'Gill Sans', 'Segoe UI', sans-serif"
+  ctx.fillText('Disponible en la zona de salida del recorrido.', 56, height - 72)
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  return texture
+}
+
+function makeCorridorInfoTexture(title, body, accent, width = 900, height = 760) {
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d')
+
+  ctx.fillStyle = '#171018'
+  ctx.fillRect(0, 0, width, height)
+  ctx.strokeStyle = `#${new THREE.Color(accent).getHexString()}`
+  ctx.lineWidth = 12
+  ctx.strokeRect(18, 18, width - 36, height - 36)
+
+  ctx.fillStyle = '#d9b36a'
+  ctx.font = "700 48px 'Gill Sans', 'Segoe UI', sans-serif"
+  ctx.fillText(title, 48, 92)
+
+  ctx.fillStyle = '#f5efe4'
+  ctx.font = "29px 'Gill Sans', 'Segoe UI', sans-serif"
+
+  const words = body.split(/\s+/)
+  const lines = []
+  let line = ''
+
+  for (const word of words) {
+    const next = line ? `${line} ${word}` : word
+    if (ctx.measureText(next).width > width - 96) {
+      lines.push(line)
+      line = word
+    } else {
+      line = next
+    }
+  }
+
+  if (line) lines.push(line)
+
+  lines.slice(0, 11).forEach((content, index) => {
+    ctx.fillText(content, 48, 170 + index * 42)
+  })
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  return texture
+}
+
 function createFrame({ width, height, texture }) {
   const group = new THREE.Group()
   const frameMaterial = new THREE.MeshLambertMaterial({ color: TRIM_COLOR })
@@ -163,6 +264,13 @@ function createFrame({ width, height, texture }) {
   right.position.x = width / 2 + border / 2
   group.add(top, bottom, left, right)
   return group
+}
+
+function markInteractive(root, url) {
+  root.userData.url = url
+  root.traverse((child) => {
+    child.userData.url = url
+  })
 }
 
 function placeOnNorthWall(mesh, col, row, offset = 0.1, y = 1.55) {
@@ -367,4 +475,90 @@ export function buildRoom3Exhibit(content) {
 
 export function buildRoom4Exhibit(content) {
   return buildRoomExhibit(content, 'room4')
+}
+
+export async function buildCorridorNorthLinkExhibit() {
+  const url = 'https://capsula-de-aprendizaje.free.nf/'
+  let texture
+
+  try {
+    texture = await loadTexture(new URL('data/salida/imagenes/capsula%201.png', window.location.href).toString())
+  } catch {
+    texture = makeLinkCanvasTexture('Capsula de aprendizaje', url, 0x7b5031, 1280, 840)
+  }
+
+  const frame = createFrame({ width: 2.7, height: 1.78, texture })
+  placeOnNorthWall(frame, 5, 1, 0.12, 1.56)
+  markInteractive(frame, url)
+  return frame
+}
+
+export async function buildCorridorSouthLinkExhibit() {
+  const url = 'https://docs.google.com/presentation/d/1oSXM_9z2S2yyi5KRNtGhktzd8EWdX4Ih/edit?usp=sharing&ouid=109710567010921936577&rtpof=true&sd=true'
+  let texture
+
+  try {
+    texture = await loadTexture(new URL('data/salida/imagenes/capsula%202.png', window.location.href).toString())
+  } catch {
+    texture = makeLinkCanvasTexture(
+      'Capsula de aprendizaje 2',
+      'Presentacion interactiva sobre la reconfiguracion del aprendizaje.',
+      0x7b5031,
+      1280,
+      840,
+    )
+  }
+
+  const frame = createFrame({ width: 2.7, height: 1.78, texture })
+  placeOnSouthWall(frame, 5, 7, 0.12, 1.56)
+  markInteractive(frame, url)
+  return frame
+}
+
+export function buildCorridorNorthInfoExhibits() {
+  const group = new THREE.Group()
+
+  const rizomaTexture = makeCorridorInfoTexture(
+    'Rizoma',
+    'El rizoma propone pensar el aprendizaje como una red abierta de conexiones multiples, sin un centro unico ni un recorrido obligatorio. En lugar de avanzar en linea recta, se aprende enlazando ideas, recursos, personas y experiencias desde distintos puntos de entrada.',
+    0x7b5031,
+  )
+  const rizomaFrame = createFrame({ width: 1.55, height: 1.3, texture: rizomaTexture })
+  placeOnWestWall(rizomaFrame, 5, 2, 0.12, 1.46)
+  group.add(rizomaFrame)
+
+  const capsulaTexture = makeCorridorInfoTexture(
+    'Capsula',
+    'Esta pieza forma parte de una capsula de aprendizaje: un recurso breve que organiza texto, imagen, audio, video e interaccion alrededor de una idea central. Funciona como una entrada flexible para explorar el tema y seguir nuevas conexiones.',
+    0x7b5031,
+  )
+  const capsulaFrame = createFrame({ width: 1.55, height: 1.3, texture: capsulaTexture })
+  placeOnEastWall(capsulaFrame, 5, 2, 0.12, 1.46)
+  group.add(capsulaFrame)
+
+  return group
+}
+
+export function buildCorridorSouthInfoExhibits() {
+  const group = new THREE.Group()
+
+  const rizomaTexture = makeCorridorInfoTexture(
+    'Rizoma',
+    'Como rizoma, esta capsula no impone un recorrido unico. Permite entrar por distintas capas del tema, conectar materiales y construir una lectura propia a partir de enlaces, medios y preguntas abiertas.',
+    0x7b5031,
+  )
+  const rizomaFrame = createFrame({ width: 1.55, height: 1.3, texture: rizomaTexture })
+  placeOnWestWall(rizomaFrame, 5, 6, 0.12, 1.46)
+  group.add(rizomaFrame)
+
+  const capsulaTexture = makeCorridorInfoTexture(
+    'Capsula',
+    'Esta capsula organiza una experiencia breve de exploracion con imagen, presentacion y recorrido conceptual. Funciona como una entrada puntual al tema y como un nodo que puede abrir nuevas trayectorias dentro del museo.',
+    0x7b5031,
+  )
+  const capsulaFrame = createFrame({ width: 1.55, height: 1.3, texture: capsulaTexture })
+  placeOnEastWall(capsulaFrame, 5, 6, 0.12, 1.46)
+  group.add(capsulaFrame)
+
+  return group
 }

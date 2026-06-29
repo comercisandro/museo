@@ -1,8 +1,0 @@
-3. Tecnologías emergentes
-Entre las tecnologías emergentes se reconocen la inteligencia artificial, la realidad aumentada, la realidad virtual, la analítica de aprendizaje y el blockchain. Estas tecnologías poseen un importante potencial transformador, pero también implican riesgos que deben ser analizados críticamente.
-
-Vigilancia excesiva.
-Aislamiento social.
-Sesgos algorítmicos.
-Dependencia tecnológica.
-Desigualdad en el acceso.

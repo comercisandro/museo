@@ -1,5 +1,0 @@
-Esta sala trabaja la pedagogia de la sospecha.
-
-Aqui puedes colocar el texto curatorial, un manifiesto o una explicacion breve de la habitacion 1.
-
-Si agregas una imagen, un audio o un video con los nombres definidos en manifest.json, el panel lateral los mostrara automaticamente al entrar en la sala.

@@ -27,7 +27,7 @@ const AREA_DEFINITIONS = {
   corridor: {
     title: 'Nucleo de Circulacion',
     label: 'Cruce central',
-    description: 'Espacio de cruce entre las cuatro salas. Desde este nucleo se organiza una circulacion breve, abierta y no lineal.',
+    description: 'Espacio de cruce entre cuatro salas y dos capsulas de aprendizaje. Desde este nucleo se articulan recorridos breves, abiertos y no lineales.',
     accent: 0x7b5031,
     regions: [[1, 2, 7, 7]],
   },

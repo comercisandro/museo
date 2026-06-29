@@ -1,6 +1,0 @@
-Tendencias y Tensiones: El Fenómeno Socio-Técnico
-La Inteligencia Artificial (IA) no es una tecnología neutra, sino un fenómeno socio-técnico cargado de sentidos e intereses que reproduce estructuras de poder y sesgos culturales dominantes [1], [2].
-
-Sesgos Algorítmicos: Los sistemas de IA se entrenan con datos históricos que reflejan inequidades sociales, amplificando patrones discriminatorios [3], [4]. Esto tiene consecuencias tangibles, como algoritmos de calificación que penalizan estructuras lingüísticas de minorías étnicas o perpetúan desventajas para estudiantes con discapacidades [5], [4].
-Colonización Pedagógica: Existe el riesgo de que las plataformas globales impongan las lógicas del "Norte Global", invisibilizando saberes locales y perspectivas críticas del Sur [6], [7]. Este proceso de "colonialismo digital" erosiona las prácticas educativas situadas y la memoria colectiva [6], [7].
-Tensión Fundamental: La incorporación acrítica de estas herramientas puede derivar en una "estandarización" educativa, donde la métrica cuantificable subordina la autonomía docente a la lógica del mercado [8], [9], [10].

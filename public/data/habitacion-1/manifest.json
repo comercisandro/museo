@@ -3,25 +3,17 @@
   "description": "Una sala sobre colonialismo digital, soberania cognitiva y la necesidad de sostener el juicio humano frente a la automatizacion.",
   "texts": [
     {
-      "title": "Curaduria 1: La disputa",
-      "path": "/data/habitacion-1/texto/curatorial-1.txt"
+      "title": "Soberania cognitiva",
+      "path": "/data/habitacion-1/texto/texto-1.txt"
     },
     {
-      "title": "Curaduria 2: La sospecha",
-      "path": "/data/habitacion-1/texto/curatorial-2.txt"
-    },
-    {
-      "title": "Curaduria 3: La imagen",
-      "path": "/data/habitacion-1/texto/curatorial-3.txt"
-    },
-    {
-      "title": "Curaduria 4: La salida",
-      "path": "/data/habitacion-1/texto/curatorial-4.txt"
+      "title": "Frente al colonialismo de plataforma",
+      "path": "/data/habitacion-1/texto/texto-2.txt"
     }
   ],
   "image": {
-    "path": "/data/habitacion-1/imagenes/colonialismo-digital.svg",
-    "caption": "Colonialismo digital y encrucijada algoritmica"
+    "path": "/data/habitacion-1/imagenes/Educaci%C3%B3n_en_la_Encrucijada_Algor%C3%ADtmica.png",
+    "caption": "Educacion en la encrucijada algoritmica"
   },
   "audio": {
     "path": "/data/habitacion-1/audio/Soberan%C3%ADa_cognitiva_frente_a_la_IA.m4a"

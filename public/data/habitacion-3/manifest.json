@@ -3,11 +3,11 @@
   "description": "Una sala sobre PLE, organizacion del aprendizaje y construccion de trayectorias propias en entornos digitales.",
   "texts": [
     {
-      "title": "Presentacion",
+      "title": "Cartografias del aprendizaje",
       "path": "/data/habitacion-3/texto/presentacion.txt"
     },
     {
-      "title": "Proyeccion",
+      "title": "Entorno personal de aprendizaje",
       "path": "/data/habitacion-3/texto/proximo-recurso.txt"
     }
   ],
