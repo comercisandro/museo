@@ -68,6 +68,16 @@ const scene = new THREE.Scene()
 scene.background = new THREE.Color(BACKGROUND_COLOR)
 scene.fog = new THREE.Fog(BACKGROUND_COLOR, FOG_NEAR, FOG_FAR)
 
+const CENTRAL_CORRIDOR_CELLS = new Set([
+  '3,4',
+  '3,5',
+  '3,6',
+  '4,5',
+  '5,4',
+  '5,5',
+  '5,6',
+])
+
 const camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, 0.1, 100)
 
 const renderer = new THREE.WebGLRenderer({ antialias: false })
@@ -123,6 +133,10 @@ function stopCorridorVideo() {
   corridorVideoHint.classList.add('is-hidden')
 }
 
+function isCentralCorridorCell(row, col) {
+  return CENTRAL_CORRIDOR_CELLS.has(`${row},${col}`)
+}
+
 async function ensureRoomContent(roomNumber) {
   if (roomContents.has(roomNumber)) {
     return roomContents.get(roomNumber)
@@ -176,7 +190,7 @@ async function updateHud(state) {
   const previousAreaId = currentAreaId
   currentAreaId = area.id
 
-  if (area.id === 'corridor') {
+  if (area.id === 'corridor' && isCentralCorridorCell(state.row, state.col)) {
     corridorVideoDock.classList.remove('is-hidden')
 
     if (previousAreaId !== 'corridor' || corridorVideo.paused) {
