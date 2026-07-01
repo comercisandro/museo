@@ -38,6 +38,13 @@ app.innerHTML = `
         <span>A/D: girar</span>
       </div>
     </div>
+    <div class="corridor-video-dock is-hidden">
+      <p class="corridor-video-label">Video del pasillo central</p>
+      <video class="corridor-video" controls preload="metadata" playsinline loop>
+        <source src="./data/salida/videos/Presentacion.mp4" type="video/mp4" />
+      </video>
+      <p class="corridor-video-hint is-hidden">Haz clic en el video para activar la reproduccion si el navegador bloquea el audio automatico.</p>
+    </div>
     <div class="audio-dock is-hidden">
       <p class="audio-dock-label">Audio de la sala</p>
       <audio class="room-audio" controls preload="metadata"></audio>
@@ -50,6 +57,9 @@ const hudTitle = document.querySelector('.hud-title')
 const hudSubtitle = document.querySelector('.hud-subtitle')
 const hudCopy = document.querySelector('.hud-copy')
 const hudDirection = document.querySelector('.hud-direction')
+const corridorVideoDock = document.querySelector('.corridor-video-dock')
+const corridorVideo = document.querySelector('.corridor-video')
+const corridorVideoHint = document.querySelector('.corridor-video-hint')
 const audioDock = document.querySelector('.audio-dock')
 const audioDockLabel = document.querySelector('.audio-dock-label')
 const roomAudio = document.querySelector('.room-audio')
@@ -97,6 +107,21 @@ camera.rotation.y = -spawn.direction * (Math.PI / 2)
 const roomContents = new Map()
 let currentAreaId = null
 let currentAudioRoomNumber = null
+
+async function playCorridorVideo() {
+  try {
+    await corridorVideo.play()
+    corridorVideoHint.classList.add('is-hidden')
+  } catch {
+    corridorVideoHint.classList.remove('is-hidden')
+  }
+}
+
+function stopCorridorVideo() {
+  corridorVideo.pause()
+  corridorVideo.currentTime = 0
+  corridorVideoHint.classList.add('is-hidden')
+}
 
 async function ensureRoomContent(roomNumber) {
   if (roomContents.has(roomNumber)) {
@@ -150,6 +175,20 @@ async function updateHud(state) {
 
   const previousAreaId = currentAreaId
   currentAreaId = area.id
+
+  if (area.id === 'corridor') {
+    corridorVideoDock.classList.remove('is-hidden')
+
+    if (previousAreaId !== 'corridor' || corridorVideo.paused) {
+      playCorridorVideo()
+    }
+  } else {
+    corridorVideoDock.classList.add('is-hidden')
+
+    if (!corridorVideo.paused || corridorVideo.currentTime > 0) {
+      stopCorridorVideo()
+    }
+  }
 
   if (['room1', 'room2', 'room3', 'room4'].includes(area.id)) {
     const roomNumber = Number(area.id.replace('room', ''))
@@ -237,6 +276,11 @@ function handleCanvasClick(event) {
 
 renderer.domElement.addEventListener('pointermove', handlePointerMove)
 renderer.domElement.addEventListener('click', handleCanvasClick)
+corridorVideo.addEventListener('click', () => {
+  if (corridorVideo.paused) {
+    playCorridorVideo()
+  }
+})
 
 function animate() {
   requestAnimationFrame(animate)
